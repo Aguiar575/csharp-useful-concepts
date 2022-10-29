@@ -14,13 +14,13 @@ Console.WriteLine("-------- downcast and upcast --------");
 var stock = new Stock("None");
 
 //Downcast
-if(stock is Asset)
+if (stock is Asset)
     Console.WriteLine("Downcastig");
 
 Asset assetDowncast = stock;
 
 //upcast
-if(assetDowncast is Stock)
+if (assetDowncast is Stock)
     Console.WriteLine("Upcasting");
 
 Stock stockUpcast = (Stock)assetDowncast;
@@ -30,7 +30,7 @@ var stringStack = new Stack<string>();
 stringStack.Push("someWord");
 stringStack.Push("MoreWord");
 
-while(stringStack.HasNext)
+while (stringStack.HasNext)
     Console.WriteLine(stringStack.Pop());
 
 //Covariance
@@ -45,3 +45,48 @@ Console.WriteLine(animal.Name);
 IPushable<Animal> moreAnimals = new Stack<Animal>();
 IPushable<Fox> moreFoxes = moreAnimals;
 moreFoxes.Push(new Fox("StarFox"));
+
+Console.WriteLine("-------- delegates --------");
+Transformer t = SomeOperations.Square;
+Console.WriteLine(t(2));
+
+int[] values = { 1, 2, 3, 4 };
+JustWrapperOfPluginMethods.Transform(values, t);
+foreach (int val in values)
+    Console.WriteLine(val);
+
+//Action is Always void
+Action<int> action = SomeOperations.PrintVal;
+action(23);
+
+//Func returns value;
+Func<int, int> func = SomeOperations.Square;
+Console.WriteLine(func(12));
+
+Action print = delegate
+{
+    Console.WriteLine("Anonymous call");
+};
+
+WrapperForAnonymous anon = new WrapperForAnonymous(print);
+anon.TriggerAnonymousFunc();
+anon.TriggerParameterAnonymousFunc(SomeOperations.Square, 2);
+
+Console.WriteLine("-------- Events --------");
+Events.Stock stockEvents = new Events.Stock("THPW");
+stockEvents.Price = 27.10M;
+
+stockEvents.PriceChanged += Events.StockPrice.StockPriceChanged;
+stockEvents.Price = 31.59M;
+
+Console.WriteLine("-------- Events --------");
+string captalizedword = "SomeWord";
+if (captalizedword.IsCaptalized())
+    Console.WriteLine("Captalized");
+
+Console.WriteLine("-------- Anonymous Types --------");
+int age = 1;
+var dude = new { Name = "Bob", Age = age };
+
+//Anonymous tuples
+(string, int) bob = ("Bob", 23);
