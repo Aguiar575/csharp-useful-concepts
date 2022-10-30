@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Unsafe;
+
 Console.WriteLine("-------- params modifier --------");
 Console.WriteLine(ParamsModifier.SumBunchOfInts(1, 2, 3, 4));
 
@@ -72,21 +74,40 @@ WrapperForAnonymous anon = new WrapperForAnonymous(print);
 anon.TriggerAnonymousFunc();
 anon.TriggerParameterAnonymousFunc(SomeOperations.Square, 2);
 
-Console.WriteLine("-------- Events --------");
+Console.WriteLine("-------- events --------");
 Events.Stock stockEvents = new Events.Stock("THPW");
 stockEvents.Price = 27.10M;
 
 stockEvents.PriceChanged += Events.StockPrice.StockPriceChanged;
 stockEvents.Price = 31.59M;
 
-Console.WriteLine("-------- Events --------");
+Console.WriteLine("-------- extension methods --------");
 string captalizedword = "SomeWord";
 if (captalizedword.IsCaptalized())
     Console.WriteLine("Captalized");
 
-Console.WriteLine("-------- Anonymous Types --------");
+Console.WriteLine("-------- anonymous Types --------");
 int age = 1;
 var dude = new { Name = "Bob", Age = age };
 
 //Anonymous tuples
 (string, int) bob = ("Bob", 23);
+
+Console.WriteLine("-------- unsafe blocks --------");
+Test test = new Test();
+unsafe {
+    fixed(int* p = &test.X)
+    {
+        *p = 9;
+    }
+    Console.WriteLine(test.X);
+}
+
+//pointer-to-member
+TestStruct testStruct = new TestStruct();
+unsafe {
+    TestStruct* p = &testStruct;
+    p->X = 9;
+
+    Console.WriteLine(testStruct.X);
+}
